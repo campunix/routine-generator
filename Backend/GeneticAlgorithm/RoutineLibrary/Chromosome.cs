@@ -23,9 +23,6 @@ public class Chromosome
         {
             // Can be initialize different way
 
-            //(2 + (3-1 * 5) = 12
-            //(4 * 4 * 5) = 80
-
             gene.CellNumber = CalculateCellNumber(gene);
             Genes.Add(gene);
             //Console.WriteLine(JsonConvert.SerializeObject(gene));
@@ -88,12 +85,9 @@ public class Chromosome
     private bool IsSameDay(Gene first, Gene second)
     {
         int totalCellInADay = TotalSemester * TotalSlot;
-        int day = first.CellNumber / totalCellInADay;
-        int firstCellOnDay = totalCellInADay * day;
-        int lastCellOnDay = firstCellOnDay + totalCellInADay - 1;
-
-        return (first.CellNumber >= firstCellOnDay && first.CellNumber <= lastCellOnDay)
-            && (second.CellNumber >= firstCellOnDay && second.CellNumber <= lastCellOnDay);
+        int cell1Day = first.CellNumber / totalCellInADay;
+        int cell2Day = second.CellNumber / totalCellInADay;
+        return cell1Day == cell2Day;
     }
 
     public Chromosome Crossover(Chromosome other)
