@@ -14,10 +14,11 @@ public class RoutineGenerator
         new("CSE-210", "MAI", "2-1", 1),
         new("CSE-212", "EI",  "2-1", 1),
         new("CSE-303", "SKS", "3-1", 2),
-        new("CSE-307", "JKD", "3-1", 2),
         new("CSE-305", "BA",  "3-1", 2),
-        new("CSE-314", "SB",  "3-1", 2),
+        new("CSE-307", "JKD", "3-1", 2),
         new("CSE-309", "AKA", "3-1", 2),
+        new("CSE-314", "SB",  "3-1", 2),
+        new("CSE-304", "SKS", "3-1", 2),
     ];
 
     public int TotalPopulation = 10;
