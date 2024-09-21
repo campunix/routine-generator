@@ -37,16 +37,20 @@ public class Chromosome
         {
             for (int j = i + 1; j < Genes.Count; j++)
             {
-                if (Genes[i].CellNumber == Genes[j].CellNumber
-                    && (IsSameCourseCode(Genes[i], Genes[j])
-                    || IsSameCourseTeacher(Genes[i], Genes[j])
-                    || IsSameSemester(Genes[i], Genes[j])))
+                if (Genes[i].CellNumber == Genes[j].CellNumber)
                 {
                     conflicts++;
                 }
 
-                if (IsSameSlotOnSameDay(Genes[i], Genes[j])
-                    && IsSameCourseTeacher(Genes[i], Genes[j]))
+                if (Genes[i].HasSameCourseTeacherOf(Genes[j])
+                    && Genes[i].IsInSameSlotOnSameDay(Genes[j], TotalSlot, TotalSemester))
+                {
+                    conflicts++;
+                }
+
+                if (Genes[i].IsLab
+                    && Genes[i].HasSameCourseTeacherOf(Genes[j])
+                    && Genes[i].IsInPreviousSlotOnSameDay(Genes[j], TotalSlot, TotalSemester))
                 {
                     conflicts++;
                 }
@@ -54,40 +58,6 @@ public class Chromosome
         }
 
         Fitness = 1.0 / (1 + conflicts);
-    }
-
-    private static bool IsSameCourseCode(Gene first, Gene second)
-    {
-        return first.CourseCode == second.CourseCode;
-    }
-
-    private static bool IsSameCourseTeacher(Gene first, Gene second)
-    {
-        return first.CourseTeacher == second.CourseTeacher;
-    }
-
-    private static bool IsSameSemester(Gene first, Gene second)
-    {
-        return first.Semester == second.Semester;
-    }
-
-    private bool IsSameSlotOnSameDay(Gene first, Gene second)
-    {
-        return IsSameDay(first, second)
-            && IsSameSlot(first, second);
-    }
-
-    private bool IsSameSlot(Gene first, Gene second)
-    {
-        return first.CellNumber % TotalSlot == second.CellNumber % TotalSlot;
-    }
-
-    private bool IsSameDay(Gene first, Gene second)
-    {
-        int totalCellInADay = TotalSemester * TotalSlot;
-        int cell1Day = first.CellNumber / totalCellInADay;
-        int cell2Day = second.CellNumber / totalCellInADay;
-        return cell1Day == cell2Day;
     }
 
     public Chromosome Crossover(Chromosome other)
@@ -112,7 +82,7 @@ public class Chromosome
     private int CalculateCellNumber(Gene gene)
     {
         int totalCellInADay = TotalSemester * TotalSlot;
-        int currentSemester = gene.SememsterNumber; // Assume 2-1 == 3 , 4-1 == 1, 3-1 == 2
+        int currentSemester = gene.SememsterNumber;
 
         int cellNumber = (rand.Next(5) + ((currentSemester - 1) * TotalSlot))
             + (rand.Next(5) * totalCellInADay);

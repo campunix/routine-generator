@@ -75,7 +75,7 @@ async function populateData() {
         var element = document.getElementById(`cell-${item.cellNumber}`);
         if (element)
         {
-            element.textContent = `${item.courseCode} (${item.courseTeacher})`;
+            element.textContent = `${item.courseCode}${item.isLab ? "-Lab" : ""} (${item.courseTeacher})`;
         }
     });
 }

@@ -5,20 +5,20 @@ namespace RoutineLibrary;
 public class RoutineGenerator
 {
     public List<Gene> AvailableGenes = [
-        new("CSE-203", "EI",  "2-1", 1),
-        new("CSE-205", "NAR", "2-1", 1),
-        new("CSE-206", "GM",  "2-1", 1),
-        new("CSE-207", "MMB", "2-1", 1),
-        new("CSE-208", "MZR", "2-1", 1),
-        new("CSE-209", "MAI", "2-1", 1),
-        new("CSE-210", "MAI", "2-1", 1),
-        new("CSE-212", "EI",  "2-1", 1),
-        new("CSE-303", "SKS", "3-1", 2),
-        new("CSE-305", "BA",  "3-1", 2),
-        new("CSE-307", "JKD", "3-1", 2),
-        new("CSE-309", "AKA", "3-1", 2),
-        new("CSE-314", "SB",  "3-1", 2),
-        new("CSE-304", "SKS", "3-1", 2),
+        new("CSE-203", "EI",  "2-1", 1, true),
+        new("CSE-205", "NAR", "2-1", 1, false),
+        new("CSE-206", "GM",  "2-1", 1, false),
+        new("CSE-207", "MMB", "2-1", 1, false),
+        new("CSE-208", "MZR", "2-1", 1, false),
+        new("CSE-209", "MAI", "2-1", 1, false),
+        new("CSE-210", "MAI", "2-1", 1, true),
+        new("CSE-212", "EI",  "2-1", 1, true),
+        new("CSE-303", "SKS", "3-1", 2, false),
+        new("CSE-305", "BA",  "3-1", 2, false),
+        new("CSE-307", "JKD", "3-1", 2, false),
+        new("CSE-309", "AKA", "3-1", 2, false),
+        new("CSE-314", "SB",  "3-1", 2, true),
+        new("CSE-304", "SKS", "3-1", 2, true),
     ];
 
     public int TotalPopulation = 10;
