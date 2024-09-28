@@ -14,24 +14,24 @@ public static class GeneExtensions
 
     public static bool HasSameSemesterOf(this Gene first, Gene second)
     {
-        return first.Semester == second.Semester;
+        return first.SememsterNumber == second.SememsterNumber;
     }
 
-    public static bool IsInSameSlotOnSameDay(this Gene first, Gene second, int totalSlot, int totalSemester)
+    public static bool IsInSameSlotOnSameDayOf(this Gene first, Gene second, int totalSlot, int totalSemester)
     {
-        return IsInSameDay(first, second, totalSlot, totalSemester)
+        return first.IsInSameDayOf(second, totalSlot, totalSemester)
             && first.IsInSameSlotOf(second, totalSlot);
     }
 
-    public static bool IsInPreviousSlotOnSameDay(this Gene first, Gene second, int totalSlot, int totalSemester)
+    public static bool IsInPreviousSlotOnSameDayOf(this Gene first, Gene second, int totalSlot, int totalSemester)
     {
-        return IsInSameDay(first, second, totalSlot, totalSemester)
+        return first.IsInSameDayOf(second, totalSlot, totalSemester)
             && first.IsInPreviousSlotOf(second, totalSlot);
     }
 
     public static bool IsInNextSlotOnSameDay(this Gene first, Gene second, int totalSlot, int totalSemester)
     {
-        return IsInSameDay(first, second, totalSlot, totalSemester)
+        return first.IsInSameDayOf(second, totalSlot, totalSemester)
             && first.IsInPreviousSlotOf(second, totalSlot);
     }
 
@@ -42,15 +42,20 @@ public static class GeneExtensions
 
     private static bool IsInPreviousSlotOf(this Gene first, Gene second, int totalSlot)
     {
-        return first.CellNumber % totalSlot == (second.CellNumber - 1) % totalSlot;
+        return first.CellNumber % totalSlot == ((second.CellNumber % totalSlot) - 1);
     }
 
     private static bool IsInNextSlotOf(this Gene first, Gene second, int totalSlot)
     {
-        return first.CellNumber % totalSlot == (second.CellNumber + 1) % totalSlot;
+        return first.CellNumber % totalSlot == ((second.CellNumber % totalSlot) + 1);
     }
 
-    private static bool IsInSameDay(this Gene first, Gene second, int totalSlot, int totalSemester)
+    public static bool IsLastSlot(this Gene gene, int totalSlot)
+    {
+        return gene.CellNumber % totalSlot == (totalSlot - 1);
+    }
+
+    private static bool IsInSameDayOf(this Gene first, Gene second, int totalSlot, int totalSemester)
     {
         int totalCellInADay = totalSlot * totalSemester;
         int cell1Day = first.CellNumber / totalCellInADay;

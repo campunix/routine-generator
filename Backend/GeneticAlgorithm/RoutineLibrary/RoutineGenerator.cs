@@ -14,11 +14,11 @@ public class RoutineGenerator
         new("CSE-210", "MAI", "2-1", 1, true),
         new("CSE-212", "EI",  "2-1", 1, true),
         new("CSE-303", "SKS", "3-1", 2, false),
+        new("CSE-304", "SKS", "3-1", 2, true),
         new("CSE-305", "BA",  "3-1", 2, false),
         new("CSE-307", "JKD", "3-1", 2, false),
         new("CSE-309", "AKA", "3-1", 2, false),
         new("CSE-314", "SB",  "3-1", 2, true),
-        new("CSE-304", "SKS", "3-1", 2, true),
     ];
 
     public int TotalPopulation = 10;
@@ -30,12 +30,12 @@ public class RoutineGenerator
         var chromosomes = InitializePopulation();
 
         int generation = 0;
-        while (generation < 1000) // max generations
+        while (generation < 1500) // max generations
         {
             // Evaluate fitness
             foreach (var chromosome in chromosomes)
             {
-                chromosome.CalculateFitness();
+                chromosome.CalculateFitness(false);
             }
 
             // Sort population by fitness
@@ -46,6 +46,8 @@ public class RoutineGenerator
             {
                 Console.WriteLine("Optimal schedule found:");
                 PrintSchedule(chromosomes[0]);
+
+                chromosomes[0].CalculateFitness(true);
 
                 return chromosomes[0];
             }
@@ -109,7 +111,9 @@ public class RoutineGenerator
     // Print the schedule
     private static void PrintSchedule(Chromosome schedule)
     {
-        Console.WriteLine(JsonConvert.SerializeObject(schedule.Genes));
+        //Console.WriteLine(JsonConvert.SerializeObject(schedule.Genes));
+
+        Console.WriteLine($"Conflicts: {schedule.Conflicts}");
 
         var ordered = schedule.Genes.OrderBy(x => x.CellNumber).ToList();
         for (int i = 0; i < schedule.Genes.Count; i++)

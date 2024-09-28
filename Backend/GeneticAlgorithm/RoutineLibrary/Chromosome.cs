@@ -4,6 +4,7 @@ public class Chromosome
 {
     public int TotalSlot = 5;
     public int TotalSemester = 2;
+    public int Conflicts = 0;
 
     public List<Gene> Genes { get; set; }
 
@@ -29,34 +30,55 @@ public class Chromosome
         }
     }
 
-    public void CalculateFitness()
+    public void CalculateFitness(bool showConflicts)
     {
         int conflicts = 0;
 
         for (int i = 0; i < Genes.Count; i++)
         {
-            for (int j = i + 1; j < Genes.Count; j++)
+            for (int j = 0; j < Genes.Count; j++)
             {
+                if (i == j) continue;
+
                 if (Genes[i].CellNumber == Genes[j].CellNumber)
                 {
                     conflicts++;
                 }
 
+                if ((Genes[i].IsLab && Genes[i].IsLastSlot(TotalSlot))
+                    || (Genes[j].IsLab && Genes[j].IsLastSlot(TotalSlot)))
+                {
+                    conflicts++;
+                }
+
                 if (Genes[i].HasSameCourseTeacherOf(Genes[j])
-                    && Genes[i].IsInSameSlotOnSameDay(Genes[j], TotalSlot, TotalSemester))
+                    && Genes[i].IsInSameSlotOnSameDayOf(Genes[j], TotalSlot, TotalSemester))
                 {
                     conflicts++;
                 }
 
                 if (Genes[i].IsLab
                     && Genes[i].HasSameCourseTeacherOf(Genes[j])
-                    && Genes[i].IsInPreviousSlotOnSameDay(Genes[j], TotalSlot, TotalSemester))
+                    && Genes[i].IsInPreviousSlotOnSameDayOf(Genes[j], TotalSlot, TotalSemester))
                 {
                     conflicts++;
+                }
+
+                // TODO: Room specific constraint will be added in the following condition
+                if (Genes[i].IsLab
+                    && Genes[i].HasSameSemesterOf(Genes[j])
+                    && Genes[i].IsInPreviousSlotOnSameDayOf(Genes[j], TotalSlot, TotalSemester))
+                {
+                    conflicts++;
+                    if (showConflicts)
+                    {
+                        Console.WriteLine("No empty slot after lab");
+                    }
                 }
             }
         }
 
+        Conflicts = conflicts;
         Fitness = 1.0 / (1 + conflicts);
     }
 
